@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string.h>
 using namespace std;
@@ -8,6 +9,8 @@ struct node
     node *left;
     node *right;
 };
+
+
 class tree
 {
     char prefix[20];
@@ -19,6 +22,8 @@ public:
     void non_rec_postorder(node *);
     void del(node *);
 };
+
+
 class stack1
 {
     node *data[30];
@@ -44,6 +49,8 @@ public:
         return (data[top--]);
     }
 };
+
+
 void tree::expression(char prefix[])
 {
     char c;
@@ -73,6 +80,8 @@ void tree::expression(char prefix[])
     }
     top = s.pop();
 }
+
+
 void tree::display(node *root)
 {
     if (root != NULL)
@@ -82,9 +91,11 @@ void tree::display(node *root)
         display(root->right);
     }
 }
+
+
 void tree::non_rec_postorder(node *top)
 {
-    stack1 s1, s2; /*stack s1 is being used for flag . A NULL data implies that the right subtree has not been visited */
+    stack1 s1, s2;
     node *T = top;
     cout << "\n";
     s1.push(T);
@@ -103,17 +114,19 @@ void tree::non_rec_postorder(node *top)
         cout << top->data;
     }
 }
+
+
 void tree::del(node *node)
 {
     if (node == NULL)
-        return;
-    /* first delete both subtrees */
+        return;   
     del(node->left);
-    del(node->right);
-    /* then delete the node */
+    del(node->right);  
     cout <<endl<<"Deleting node : " << node->data<<endl;
     free(node);
 }
+
+
 int main()
 {
     char expr[20];
@@ -123,9 +136,6 @@ int main()
     cin >> expr;
     cout << expr;
     t.expression(expr);
-    //t.display(t.top);
-    //cout<<endl;
    t.non_rec_postorder(t.top);
     t.del(t.top);
-    // t.display(t.top);
 }
