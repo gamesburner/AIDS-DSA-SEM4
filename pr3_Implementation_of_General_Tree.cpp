@@ -41,8 +41,7 @@ void GT::create_tree()
         root->child[i] = new node; 
         cout << "Enter the name of Chapter " << i + 1 << " : "; 
         getline(cin, root->child[i]->label); 
-        cout << "Enter number of sections in Chapter " << root->child[i]->label << " : 
-"; 
+        cout << "Enter number of sections in Chapter " << root->child[i]->label << " : "; 
         cin >> root->child[i]->ch_count; 
         cin.ignore(); // Ignore newline character after reading integer 
         for (j = 0; j < root->child[i]->ch_count; j++) 
