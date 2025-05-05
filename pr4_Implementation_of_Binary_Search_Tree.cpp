@@ -1,6 +1,5 @@
-
-#include<iostream> 
-#include<bits/stdc++.h> 
+#include <iostream> 
+#include <bits/stdc++.h>
 using namespace std; 
 struct Tree 
 { 
@@ -176,8 +175,7 @@ int main()
                     break; 
  
             case 5: 
-                    cout<<"\n Minimum Data Value found in the tree is 
-:"<<bs.minValue(myTree); 
+                    cout<<"\n Minimum Data Value found in the tree is :"<<bs.minValue(myTree); 
                     break; 
             
             case 6: bs.swap(myTree); 
