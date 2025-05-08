@@ -14,19 +14,19 @@ class Hashing:
 
     def insert(self):
         n=0
-        while(n<self.size):
-            element=int(input("Enter element: "))
-            position=element%self.size
-            if self.isfull():
-                print("Table is full ")
+        
+        element=int(input("Enter element: "))
+        position=element%self.size
+        if self.isfull():
+            print("Table is full ")
 
-            else:
-                if self.table[position] is None:
+        else:
+            if self.table[position] is None:
                     self.table[position]=element
                     self.counter+=1
                     self.comparison+=1
 
-                else:
+            else:
                     print("collision occured, finding new position")
                     while self.table[position] is not None:
                         position+=1
@@ -37,8 +37,8 @@ class Hashing:
                     self.counter+=1
                     self.comparison+=1
 
-            print(self.table[position],"appended")
-            n+=1
+        print(self.table[position],"appended")
+        n+=1
 
 
     def display(self):
@@ -54,13 +54,20 @@ class Hashing:
                 print(f"Found at position {position}")
 
             else:
+                tr=0 #using a traversing variable 
                 while self.table[position]!=element:
                         position+=1
+                        tr+=1
                         if position>=self.size:
                             position=0
+                        if tr>=self.size: #comparing to check if we retrun to same pos
+                             break
 
                 if self.table[position]==element:
                     print(f"Found at position {position}")
+                
+                else:
+                     print("Does not exist")
 
 
 h1=Hashing()
@@ -85,14 +92,3 @@ while(choice!=0):
         break
     else:
         print("Enter correct choice")
-
-
-
-
-
-
-
-
-
-
-        
