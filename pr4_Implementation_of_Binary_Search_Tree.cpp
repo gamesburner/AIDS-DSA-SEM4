@@ -38,7 +38,7 @@ class bstree
                 } 
                 else 
                 { 
-                    setRight(aTree,data); 
+                    setLeft(aTree,data); 
                     break; 
                 } 
             } 
@@ -139,7 +139,8 @@ void inordertTraverse(Tree *aTree)
 int main() 
 { 
     bstree bs; 
-    int ch,value; 
+    int ch=0;
+    int value; 
     Tree *myTree ; 
     while(ch!=8) 
     { 
@@ -193,7 +194,8 @@ int main()
                         cout << "Could not find "<<value <<" in tree" << endl; 
                     } 
                     break; 
- 
+            case 8:cout<<"\nClosing Program...";
+            break;
             default: 
                     cout<<"\n Enter valid input"; 
                 break; 
