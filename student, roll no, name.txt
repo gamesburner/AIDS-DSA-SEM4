@@ -1,0 +1,90 @@
+/*
+    Notes: 
+    Dont forget to #include<fstream>
+    Dont forget to make object of fstream,etc
+    Dont forget to close the file in add_student or else it wont be saved
+    Dont forget to open the file in ios::out to create it
+
+
+    myFile.is_open(); myFile.close(); myFile.open();
+    ifstream(display the stuff in file), ofstream(write stuff in file), fstream(do both read and write)
+    Also myFile.close(); and not myFile.close("Student.txt");
+
+    remove("Student.txt");
+    rename("temp.txt", "Student.txt");
+
+    eg: ofstream("student.txt",ios::app)
+    modes:- ios::in, ios::out, ios::app, ios::ate
+*/
+#include<iostream>
+#include<fstream>
+using namespace std;
+class Student{
+    public:
+        string name;
+        int roll;
+        string division;
+        string address;
+};
+class solve{
+    public:
+        void add_student(){
+            fstream myFile("Student.txt",ios::app);
+            if(!myFile.is_open()) myFile.open("Student.txt");
+            Student student;
+            cout<<"Enter the name of student: "; cin>>student.name;
+            cout<<"Enter the roll of student: "; cin>>student.roll;
+            cout<<"Enter the division of student: "; cin>>student.division;
+            cout<<"Enter the address of student: "; cin>>student.address;
+            myFile<<student.name<<" "<<student.roll<<" "<<student.division<<" "<<student.address<<'\n';
+            myFile.close();
+        }
+
+        void delete_student(){
+            fstream myFile("Student.txt"); 
+            int target_roll;
+            cout << "Enter the roll no. of student to be deleted: ";
+            cin >> target_roll;
+            ofstream temp("temp.txt", ios::out);
+            Student s;
+            bool flag = false;
+            
+            while (myFile >> s.name >> s.roll >> s.division >> s.address) {
+                if (s.roll != target_roll) {
+                    temp << s.name << " " << s.roll << " " << s.division <<" "<< s.address << '\n';
+                } 
+                else {
+                    flag = true;
+                }
+            }
+            
+            temp.close();
+            myFile.close();
+            remove("Student.txt");
+            rename("temp.txt", "Student.txt");
+            
+            if (!flag) {
+                cout << "Roll no. does not exist\n";
+            } 
+            else {
+                cout << "Student's data deleted successfully\n";
+            }
+        }
+        
+
+};
+int main(){
+    solve obj;
+    while(true){
+        cout<<"Enter your choice: \n1.Add Student info \n2.Delete a student's info \n3.Exit";
+        int ch; cin>>ch;
+        switch(ch){
+            case 1:
+                obj.add_student(); break;
+            case 2:
+                obj.delete_student(); break;
+            case 3:
+                return 0;
+        }
+    }
+}

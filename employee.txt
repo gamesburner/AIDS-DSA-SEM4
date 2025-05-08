@@ -1,0 +1,167 @@
+/*
+    fstream fin("text.txt"); here fin is same as cin (getline(cin,s) => getline(fin,s))
+    
+    Use of stringstream:
+        string line = "John 101 A";
+        string name, division;
+        int roll;
+
+        stringstream ss(line);
+        ss >> name >> roll >> division;
+
+        cout << name << " " << roll << " " << division;
+
+
+        Think of stringstream as a tool to process strings like a stream of data — similar to how you’d read from cin, but now you're reading from a string.
+        You use it when your data is stored in a single line with delimiters (e.g., "|").
+        It’s easier than manually using substr() and find().
+        
+        stringstream ss(line);      //here line is a string which contains the whole target line which we found in find func
+        string empIDStr, name, designation, salaryStr, deletedStr;
+        getline(ss, empIDStr, '|');
+        getline(ss, name, '|');
+        getline(ss, designation, '|');
+        getline(ss, salaryStr, '|');
+        getline(ss, deletedStr, '|');
+
+        getline(source, destination, delimiter)
+
+*/
+
+#include<bits/stdc++.h>
+#include<fstream>
+#include<sstream>
+
+using namespace std;
+
+class Employee{
+    public:
+        string id;
+        string name;
+        string desig;
+        string salary;
+        string isDeleted;
+};
+
+void add_employee(){
+    Employee e;
+    cout<<"Enter the ID of new employee:"; cin>>e.id;
+    cout<<"Enter the name of new employee:"; cin>>e.name;
+    cout<<"Enter the designation of new employee:"; cin>>e.desig;
+    cout<<"Enter the salary of new employee:"; cin>>e.salary;
+    e.isDeleted="0";
+
+    ofstream fout_e("employee.txt",ios::app);
+    fout_e <<e.id<<" "<<e.name<<" "<<e.desig<<" "<<e.salary<<" "<<e.isDeleted<<'\n';
+    fout_e.close();
+
+    int line_number=0;
+    string s;
+    ifstream fin("employee.txt");
+    while(getline(fin,s)){
+        line_number++;
+    }
+    fin.close();
+
+    ofstream fout_i("index.txt",ios::app);
+    fout_i<<e.id<<" "<<line_number-1<<'\n';
+    fout_i.close();
+}
+
+int find_employee(){
+    string target_id;
+    cout<<"Enter the ID of the person to find: "; cin>>target_id;
+    
+    ifstream fin("index.txt");
+    bool flag=false;
+    string id,linenumber;
+    while(fin >> id >> linenumber){
+        if(id == target_id){
+            flag=true;
+            break;
+        }
+    }
+    fin.close();
+    if(!flag) return 0;
+
+    ifstream fin_e("employee.txt");
+    string line;
+    int curr_line=0,line_number=stoi(linenumber);
+    while(curr_line <= line_number && getline(fin_e, line)) {
+        curr_line++;
+    }
+    fin_e.close();
+
+    stringstream ss(line);
+    Employee e;
+    getline(ss,e.id,' ');
+    getline(ss,e.name,' ');
+    getline(ss,e.desig,' ');
+    getline(ss,e.salary,' ');
+    getline(ss,e.isDeleted);
+
+    if(e.isDeleted == "0") cout<<"Employee found\n ID: "<<e.id<<"\n Name: "<<e.name<<"\n Designation: "<<e.desig<<"\n Salary: "<<e.salary<<endl;
+    else cout<<"Employee is deleted\n";
+
+    return 1;
+}
+
+
+void delete_employee(){
+    string targetId; 
+    cout<<"Enter the ID of the employee to be deleted: ";
+    cin>>targetId;
+    
+    ifstream fin_i("index.txt");
+    string id,line_num;
+    bool flag=false;
+    while(fin_i >> id >> line_num){
+        if(id==targetId){
+            flag=true;
+            break;
+        }
+    }
+    if(!flag){
+        cout<<"Employee with this ID does not exists\n";
+        return;
+    }
+
+    int line_number=stoi(line_num),curr_line=0;
+    string line;
+    fstream employee("employee.txt");
+    ofstream tempFile("temp.txt");
+    while(getline(employee,line)){
+        if(curr_line == line_number){
+            stringstream ss(line);
+            Employee e;
+            getline(ss,e.id,' ');
+            getline(ss,e.name,' ');
+            getline(ss,e.desig,' ');
+            getline(ss,e.salary,' ');
+            e.isDeleted="1";
+            tempFile << e.id <<" "<< e.name <<" "<< e.desig << " " << e.salary << " " << e.isDeleted <<'\n';
+        }
+        else tempFile << line <<'\n';
+        curr_line++;
+    }
+    tempFile.close();
+    employee.close();
+    remove("employee.txt");
+    rename("temp.txt","employee.txt");
+    cout<<"Employee Deleted\n";
+}
+
+int main(){
+    while(true){
+        int ch;
+        cout<<"Enter your choice: \n1.Add Employee \n2.Delete Employee \n3.Find Employee \n4.Exit";
+        cin>>ch;
+        switch(ch){
+            case 1: add_employee(); break;
+            case 2: delete_employee(); break;
+            case 3: if(!(find_employee())) cout<<"Employee with this ID does not exists\n"; break;
+            case 4: return 0;
+        }
+    }
+}
+
