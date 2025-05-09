@@ -1,3 +1,4 @@
+https://askubuntu.com/questions/142050/does-ubuntu-log-when-usb-devices-are-connected#:~:text=Yes%2C%20Ubuntu%20logs%20when%20a,graphically%20using%20Log%20file%20viewer%20.
 # DSA Viva Questions 
 #
 # Unit1
